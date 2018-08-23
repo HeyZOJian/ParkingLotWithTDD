@@ -1,5 +1,7 @@
 package com.oocl.demo.entity;
 
+import static com.oocl.demo.constant.Constants.OPEN;
+
 /**
  * Created by Vito Zhuang on 8/23/2018.
  */
@@ -7,7 +9,7 @@ public class ParkingLot {
 	private Long id;
 	private String name;
 	private int size;
-	private boolean status;
+	private boolean status = OPEN;
 
 	public ParkingLot(String name, int size) {
 		this.name = name;
@@ -43,7 +45,7 @@ public class ParkingLot {
 	}
 
 
-	public boolean isStatus() {
+	public boolean getStatus() {
 		return status;
 	}
 
