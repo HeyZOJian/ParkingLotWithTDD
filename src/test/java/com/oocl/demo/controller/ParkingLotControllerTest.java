@@ -61,6 +61,6 @@ public class ParkingLotControllerTest {
 				.characterEncoding("UTF-8")
 				.content(mapper.writeValueAsString(content)));
 
-		resultActions.andExpect(status().isCreated()).andDo(print());
+		resultActions.andExpect(status().isNoContent()).andDo(print());
 	}
 }
