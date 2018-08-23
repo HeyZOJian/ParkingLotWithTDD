@@ -56,4 +56,15 @@ public class ParkingLotTest {
 
 		Assert.assertTrue(result);
 	}
+
+	@Test
+	public void should_return_false_when_update_parkingLot_info_given_parkingLot_is_not_exist() {
+		Long id = 1L;
+		ParkingLot newParkingLot = new ParkingLot("new name", 20);
+
+		given(parkingLotRepository.findById(id)).willReturn(null);
+		boolean result = parkingLotService.updateParkingLot(id, newParkingLot);
+
+		Assert.assertFalse(result);
+	}
 }
