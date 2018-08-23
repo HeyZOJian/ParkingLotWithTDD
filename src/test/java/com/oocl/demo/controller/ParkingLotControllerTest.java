@@ -78,4 +78,13 @@ public class ParkingLotControllerTest {
 
 		resultActions.andExpect(status().isBadRequest()).andDo(print());
 	}
+
+	@Test
+	public void should_return_status_code_204_when_freeze_parkingLot_given_parkinglot_id () throws Exception {
+		given(parkingLotsService.freezeParkingLot(anyLong())).willReturn(true);
+
+		ResultActions resultActions = mvc.perform(put("/parkingLots/1"));
+
+		resultActions.andExpect(status().isNoContent()).andDo(print());
+	}
 }
