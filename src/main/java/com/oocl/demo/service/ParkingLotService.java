@@ -25,10 +25,14 @@ public class ParkingLotService {
 	}
 
 	public boolean updateParkingLot(Long id, ParkingLot newParkingLot) {
-		ParkingLot parkingLot = parkingLotRepository.findById(id).orElse(null);
-		parkingLot.setName(newParkingLot.getName()!=null?newParkingLot.getName():parkingLot.getName());
-		parkingLot.setSize(newParkingLot.getSize()!=0?newParkingLot.getSize():parkingLot.getSize());
-		parkingLotRepository.save(parkingLot);
-		return true;
+		try {
+			ParkingLot parkingLot = parkingLotRepository.findById(id).orElse(null);
+			parkingLot.setName(newParkingLot.getName()!=null?newParkingLot.getName():parkingLot.getName());
+			parkingLot.setSize(newParkingLot.getSize()!=0?newParkingLot.getSize():parkingLot.getSize());
+			parkingLotRepository.save(parkingLot);
+			return true;
+		}catch (NullPointerException e){
+			return false;
+		}
 	}
 }
