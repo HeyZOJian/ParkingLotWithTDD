@@ -66,7 +66,7 @@ public class ParkingLotControllerTest {
 	}
 
 	@Test
-	public void should_return_status_code_400_when_update_parkingLot_failed () throws Exception {
+	public void should_return_status_code_404_when_update_parkingLot_failed_given_nonexistent_parkinglot_id () throws Exception {
 		JSONObject content = new JSONObject();
 		content.put("name","OOCL-ParkingLot-1");
 		content.put("size",20);
@@ -77,7 +77,7 @@ public class ParkingLotControllerTest {
 				.characterEncoding("UTF-8")
 				.content(mapper.writeValueAsString(content)));
 
-		resultActions.andExpect(status().isBadRequest()).andDo(print());
+		resultActions.andExpect(status().isNotFound()).andDo(print());
 	}
 
 	@Test
@@ -87,5 +87,14 @@ public class ParkingLotControllerTest {
 		ResultActions resultActions = mvc.perform(patch("/parkingLots/1"));
 
 		resultActions.andExpect(status().isNoContent()).andDo(print());
+	}
+
+	@Test
+	public void should_return_status_code_404_when_freeze_parkingLot_given_nonexistent_parkinglot_id () throws Exception {
+		given(parkingLotsService.freezeParkingLot(anyLong())).willReturn(false);
+
+		ResultActions resultActions = mvc.perform(patch("/parkingLots/1"));
+
+		resultActions.andExpect(status().isNotFound()).andDo(print());
 	}
 }
