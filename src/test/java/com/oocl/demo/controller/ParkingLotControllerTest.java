@@ -2,6 +2,7 @@ package com.oocl.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oocl.demo.entity.ParkingLot;
 import com.oocl.demo.service.ParkingLotService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +14,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,13 +35,28 @@ public class ParkingLotControllerTest {
 	private ObjectMapper mapper;
 
 	@Test
-	public void should_return_201_when_create_a_new_parkingLot () throws Exception {
+	public void should_return_status_code_201_when_create_a_new_parkingLot () throws Exception {
 		JSONObject content = new JSONObject();
 		content.put("name","OOCL-ParkingLot");
 		content.put("size",12);
 		given(parkingLotsService.createParkingLot(anyString(),anyInt())).willReturn(true);
 
 		ResultActions resultActions = mvc.perform(post("/parkingLots")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.characterEncoding("UTF-8")
+				.content(mapper.writeValueAsString(content)));
+
+		resultActions.andExpect(status().isCreated()).andDo(print());
+	}
+
+	@Test
+	public void should_return_status_code_204_when_update_parkingLot () throws Exception {
+		JSONObject content = new JSONObject();
+		content.put("name","OOCL-ParkingLot-1");
+		content.put("size",20);
+		given(parkingLotsService.updateParkingLot(anyLong(),any(ParkingLot.class))).willReturn(true);
+
+		ResultActions resultActions = mvc.perform(put("/parkingLots/1")
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.characterEncoding("UTF-8")
 				.content(mapper.writeValueAsString(content)));
