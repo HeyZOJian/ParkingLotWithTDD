@@ -37,6 +37,12 @@ public class ParkingLotService {
 	}
 
 	public boolean freezeParkingLot(Long id) {
-		return false;
+		try{
+			ParkingLot parkingLot = parkingLotRepository.findById(id).orElse(null);
+			parkingLot.setStatus(!parkingLot.getStatus());
+			return true;
+		}catch (NullPointerException e) {
+			return false;
+		}
 	}
 }
