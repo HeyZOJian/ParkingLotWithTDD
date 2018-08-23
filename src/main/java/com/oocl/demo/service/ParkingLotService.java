@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ParkingLotService {
+
 	private final ParkingLotRepository parkingLotRepository;
 
 	@Autowired
@@ -17,12 +18,13 @@ public class ParkingLotService {
 		this.parkingLotRepository = parkingLotRepository;
 	}
 
-	@Autowired
-
-
 	public boolean createParkingLot(String name, int size) {
-		ParkingLot parkingLot = new ParkingLot(name,size);
-        parkingLotRepository.save(parkingLot);
+		ParkingLot parkingLot = new ParkingLot(name, size);
+		parkingLotRepository.save(parkingLot);
 		return true;
+	}
+
+	public boolean updateParkingLot(Long id, ParkingLot new_parkingLot) {
+		return false;
 	}
 }
