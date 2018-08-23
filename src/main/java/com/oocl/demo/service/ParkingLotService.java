@@ -24,7 +24,11 @@ public class ParkingLotService {
 		return true;
 	}
 
-	public boolean updateParkingLot(Long id, ParkingLot new_parkingLot) {
-		return false;
+	public boolean updateParkingLot(Long id, ParkingLot newParkingLot) {
+		ParkingLot parkingLot = parkingLotRepository.findById(id).orElse(null);
+		parkingLot.setName(newParkingLot.getName()!=null?newParkingLot.getName():parkingLot.getName());
+		parkingLot.setSize(newParkingLot.getSize()!=0?newParkingLot.getSize():parkingLot.getSize());
+		parkingLotRepository.save(parkingLot);
+		return true;
 	}
 }
