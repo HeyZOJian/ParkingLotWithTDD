@@ -13,9 +13,15 @@ When update a parkinglot
 Then successfully update
 ```
 
-## 2. Update ParkingLot's infomation unsuccessfully
+## 3. Update ParkingLot's infomation unsuccessfully
 ```
 Given nonexistent parkinglot's id and update info
 When update a parkinglot
 Then unsuccessfully update
+```
+## 4. Freeze ParkingLots successfully
+```
+Given a parkingLot's id
+When freeze a parkinglot
+Then successfully freezed
 ```

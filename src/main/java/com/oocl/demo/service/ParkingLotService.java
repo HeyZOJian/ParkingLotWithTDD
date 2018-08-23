@@ -35,4 +35,8 @@ public class ParkingLotService {
 			return false;
 		}
 	}
+
+	public boolean freezeParkingLot(Long id) {
+		return false;
+	}
 }
