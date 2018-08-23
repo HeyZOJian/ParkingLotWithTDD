@@ -9,11 +9,13 @@ public class ParkingLot {
 	private Long id;
 	private String name;
 	private int size;
+	private int surplusSize;
 	private boolean status = OPEN;
 
 	public ParkingLot(String name, int size) {
 		this.name = name;
 		this.size = size;
+		this.surplusSize = size;
 	}
 
 	public ParkingLot() {
@@ -51,5 +53,13 @@ public class ParkingLot {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	public int getSurplusSize() {
+		return surplusSize;
+	}
+
+	public void setSurplusSize(int surplusSize) {
+		this.surplusSize = surplusSize;
 	}
 }
