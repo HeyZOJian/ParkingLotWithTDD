@@ -1,6 +1,7 @@
 package com.oocl.demo.service;
 
 import com.oocl.demo.entity.ParkingLot;
+import com.oocl.demo.exception.ParkinglotStillHasCarsException;
 import com.oocl.demo.repository.ParkingLotRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import static org.mockito.BDDMockito.given;
 
 /**
@@ -64,26 +66,32 @@ public class ParkingLotTest {
 	}
 
 	@Test
-	public void should_return_true_when_freeze_parkingLot_given_parkingLot_id (){
+	public void should_return_true_when_freeze_parkingLot_given_parkingLot_id() throws Exception {
 		Long id = 1L;
 		ParkingLot parkingLot = new ParkingLot("old name", 12);
 
 		given(parkingLotRepository.findById(id)).willReturn((java.util.Optional.of(parkingLot)));
-		boolean result = parkingLotService.freezeParkingLot(id);
 
+		boolean result = parkingLotService.freezeParkingLot(id);
 		Assert.assertTrue(result);
+
 	}
 
 	@Test
-	public void should_return_false_when_freeze_parkingLot_given_parkingLot_id_that_have_car (){
+	public void should_return_false_when_freeze_parkingLot_given_parkingLot_id_that_have_car() {
 		Long id = 1L;
 		ParkingLot parkingLot = new ParkingLot("old name", 12);
 		parkingLot.setSurplusSize(3);
 
 		given(parkingLotRepository.findById(id)).willReturn((java.util.Optional.of(parkingLot)));
-		boolean result = parkingLotService.freezeParkingLot(id);
+		try {
+			parkingLotService.freezeParkingLot(id);
+			Assert.fail();
+		} catch (ParkinglotStillHasCarsException e) {
 
-		Assert.assertFalse(result);
+		} catch (Exception e) {
+
+		}
 	}
 
 }

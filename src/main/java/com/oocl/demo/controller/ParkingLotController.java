@@ -2,6 +2,7 @@ package com.oocl.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.oocl.demo.entity.ParkingLot;
+import com.oocl.demo.exception.ParkinglotStillHasCarsException;
 import com.oocl.demo.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,20 +34,23 @@ public class ParkingLotController {
 	@Transactional
 	@PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity updateParkingLot(@PathVariable long id,
-	                                        @RequestBody ParkingLot parkingLot) {
+	                                       @RequestBody ParkingLot parkingLot) {
 		if (parkingLotService.updateParkingLot(id, parkingLot)) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} else {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
 	@Transactional
 	@PatchMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity freezeParkingLot(@PathVariable long id) {
-		if (parkingLotService.freezeParkingLot(id)) {
+		try {
+			parkingLotService.freezeParkingLot(id);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-		} else {
+		} catch (NullPointerException e1) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		} catch (Exception e2) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}

@@ -26,9 +26,16 @@ When freeze a parkinglot
 Then successfully freezed
 ```
 
-## 5. Freeze ParkingLots unsuccessfully
+## 5. Freeze ParkingLots unsuccessfully when parkinglot id nonexistent
 ```
 Given a nonexistent parkingLot's id
+When freeze a parkinglot
+Then unsuccessfully freezed
+```
+
+## 6. Freeze ParkingLots unsuccessfully when parkinglot has cars
+```
+Given a parkingLot's id that has cars
 When freeze a parkinglot
 Then unsuccessfully freezed
 ```

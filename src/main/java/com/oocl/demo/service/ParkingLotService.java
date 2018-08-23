@@ -1,6 +1,7 @@
 package com.oocl.demo.service;
 
 import com.oocl.demo.entity.ParkingLot;
+import com.oocl.demo.exception.ParkinglotStillHasCarsException;
 import com.oocl.demo.repository.ParkingLotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,17 +37,13 @@ public class ParkingLotService {
 		}
 	}
 
-	public boolean freezeParkingLot(Long id) {
-		try {
-			ParkingLot parkingLot = parkingLotRepository.findById(id).orElse(null);
-			if (parkingLot.getSurplusSize() == parkingLot.getSize()) {
-				parkingLot.setStatus(!parkingLot.getStatus());
-				return true;
-			} else {
-				return false;
-			}
-		} catch (NullPointerException e) {
-			return false;
+	public boolean freezeParkingLot(Long id) throws Exception {
+		ParkingLot parkingLot = parkingLotRepository.findById(id).orElse(null);
+		if (parkingLot.getSurplusSize() == parkingLot.getSize()) {
+			parkingLot.setStatus(!parkingLot.getStatus());
+			return true;
+		} else {
+			throw new ParkinglotStillHasCarsException();
 		}
 	}
 }

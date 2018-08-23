@@ -3,6 +3,8 @@ package com.oocl.demo.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oocl.demo.entity.ParkingLot;
+import com.oocl.demo.exception.ParkinglotStillHasCarsException;
+import com.oocl.demo.repository.ParkingLotRepository;
 import com.oocl.demo.service.ParkingLotService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import javax.swing.text.html.Option;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -30,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ParkingLotControllerTest {
 	@Autowired
 	private MockMvc mvc;
+	@MockBean
+	private ParkingLotRepository parkingLotRepository;
 	@MockBean
 	private ParkingLotService parkingLotsService;
 	@Autowired
@@ -82,7 +88,7 @@ public class ParkingLotControllerTest {
 
 	@Test
 	public void should_return_status_code_204_when_freeze_parkingLot_given_parkinglot_id () throws Exception {
-		given(parkingLotsService.freezeParkingLot(anyLong())).willReturn(true);
+		given(parkingLotRepository.findById(anyLong())).willReturn(java.util.Optional.of(new ParkingLot("oocl-parkinglot",20)));
 
 		ResultActions resultActions = mvc.perform(patch("/parkingLots/1"));
 
@@ -91,10 +97,21 @@ public class ParkingLotControllerTest {
 
 	@Test
 	public void should_return_status_code_404_when_freeze_parkingLot_given_nonexistent_parkinglot_id () throws Exception {
-		given(parkingLotsService.freezeParkingLot(anyLong())).willReturn(false);
+		given(parkingLotsService.freezeParkingLot(anyLong())).willThrow(NullPointerException.class);
 
 		ResultActions resultActions = mvc.perform(patch("/parkingLots/1"));
 
 		resultActions.andExpect(status().isNotFound()).andDo(print());
+	}
+
+	@Test
+	public void should_return_status_code_404_when_freeze_parkingLot_given_parkinglot_that_has_cars () throws Exception {
+		ParkingLot parkingLot = new ParkingLot("oocl-parkinglot",20);
+		parkingLot.setSurplusSize(12);
+		given(parkingLotsService.freezeParkingLot(anyLong())).willThrow(ParkinglotStillHasCarsException.class);
+
+		ResultActions resultActions = mvc.perform(patch("/parkingLots/1"));
+
+		resultActions.andExpect(status().isBadRequest()).andDo(print());
 	}
 }
