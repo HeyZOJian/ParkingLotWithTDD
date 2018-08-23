@@ -7,9 +7,9 @@ public class ParkingLot {
 	private Long id;
 	private String name;
 	private int size;
+	private boolean status;
 
 	public ParkingLot(String name, int size) {
-
 		this.name = name;
 		this.size = size;
 	}
@@ -43,4 +43,11 @@ public class ParkingLot {
 	}
 
 
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 }
