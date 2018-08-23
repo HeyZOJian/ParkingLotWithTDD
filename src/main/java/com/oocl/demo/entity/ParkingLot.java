@@ -1,11 +1,19 @@
 package com.oocl.demo.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import static com.oocl.demo.constant.Constants.OPEN;
 
 /**
  * Created by Vito Zhuang on 8/23/2018.
  */
+@Entity
 public class ParkingLot {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private int size;
