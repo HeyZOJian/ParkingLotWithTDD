@@ -83,6 +83,7 @@ public class ParkingLotTest {
 	public void should_return_false_when_freeze_parkingLot_given_parkingLot_id_that_have_car (){
 		Long id = 1L;
 		ParkingLot parkingLot = new ParkingLot("old name", 12);
+		parkingLot.setSurplusSize(3);
 
 		given(parkingLotRepository.findById(id)).willReturn((java.util.Optional.of(parkingLot)));
 		boolean result = parkingLotService.freezeParkingLot(id);

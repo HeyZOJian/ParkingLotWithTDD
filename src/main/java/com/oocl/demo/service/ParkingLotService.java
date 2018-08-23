@@ -27,21 +27,25 @@ public class ParkingLotService {
 	public boolean updateParkingLot(Long id, ParkingLot newParkingLot) {
 		try {
 			ParkingLot parkingLot = parkingLotRepository.findById(id).orElse(null);
-			parkingLot.setName(newParkingLot.getName()!=null?newParkingLot.getName():parkingLot.getName());
-			parkingLot.setSize(newParkingLot.getSize()!=0?newParkingLot.getSize():parkingLot.getSize());
+			parkingLot.setName(newParkingLot.getName() != null ? newParkingLot.getName() : parkingLot.getName());
+			parkingLot.setSize(newParkingLot.getSize() != 0 ? newParkingLot.getSize() : parkingLot.getSize());
 			parkingLotRepository.save(parkingLot);
 			return true;
-		}catch (NullPointerException e){
+		} catch (NullPointerException e) {
 			return false;
 		}
 	}
 
 	public boolean freezeParkingLot(Long id) {
-		try{
+		try {
 			ParkingLot parkingLot = parkingLotRepository.findById(id).orElse(null);
-			parkingLot.setStatus(!parkingLot.getStatus());
-			return true;
-		}catch (NullPointerException e) {
+			if (parkingLot.getSurplusSize() == parkingLot.getSize()) {
+				parkingLot.setStatus(!parkingLot.getStatus());
+				return true;
+			} else {
+				return false;
+			}
+		} catch (NullPointerException e) {
 			return false;
 		}
 	}
