@@ -22,7 +22,7 @@ public class ParkingLotController {
 
 	@Transactional
 	@PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity createParkingLots(@RequestBody JSONObject request) {
+	public ResponseEntity createParkingLot(@RequestBody JSONObject request) {
 		if (parkingLotService.createParkingLot(request.get("name").toString(), (int) request.get("size"))) {
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		} else {
@@ -32,9 +32,19 @@ public class ParkingLotController {
 
 	@Transactional
 	@PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity updateParkingLots(@PathVariable long id,
+	public ResponseEntity updateParkingLot(@PathVariable long id,
 	                                        @RequestBody ParkingLot parkingLot) {
 		if (parkingLotService.updateParkingLot(id, parkingLot)) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
+
+	@Transactional
+	@PatchMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity freezeParkingLot(@PathVariable long id) {
+		if (parkingLotService.freezeParkingLot(id)) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

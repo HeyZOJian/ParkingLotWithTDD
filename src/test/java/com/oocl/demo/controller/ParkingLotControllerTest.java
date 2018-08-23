@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -83,7 +84,7 @@ public class ParkingLotControllerTest {
 	public void should_return_status_code_204_when_freeze_parkingLot_given_parkinglot_id () throws Exception {
 		given(parkingLotsService.freezeParkingLot(anyLong())).willReturn(true);
 
-		ResultActions resultActions = mvc.perform(put("/parkingLots/1"));
+		ResultActions resultActions = mvc.perform(patch("/parkingLots/1"));
 
 		resultActions.andExpect(status().isNoContent()).andDo(print());
 	}
