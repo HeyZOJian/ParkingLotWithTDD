@@ -1,5 +1,8 @@
 package com.oocl.demo.service;
 
+import com.oocl.demo.entity.ParkingLot;
+import com.oocl.demo.repository.ParkingLotRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,7 +10,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ParkingLotService {
+	private final ParkingLotRepository parkingLotRepository;
+
+	@Autowired
+	public ParkingLotService(ParkingLotRepository parkingLotRepository) {
+		this.parkingLotRepository = parkingLotRepository;
+	}
+
+	@Autowired
+
+
 	public boolean createParkingLot(String name, int size) {
-		return false;
+		ParkingLot parkingLot = new ParkingLot(name,size);
+        parkingLotRepository.save(parkingLot);
+		return true;
 	}
 }
