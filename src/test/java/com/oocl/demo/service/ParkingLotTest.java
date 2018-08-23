@@ -67,8 +67,9 @@ public class ParkingLotTest {
 
 		Assert.assertFalse(result);
 	}
+
 	@Test
-	public void should_return_true_when_freeze_parkinglot_given_parkinglot_id (){
+	public void should_return_true_when_freeze_parkingLot_given_parkingLot_id (){
 		Long id = 1L;
 		ParkingLot parkingLot = new ParkingLot("old name", 12);
 
@@ -76,6 +77,17 @@ public class ParkingLotTest {
 		boolean result = parkingLotService.freezeParkingLot(id);
 
 		Assert.assertTrue(result);
+	}
+
+	@Test
+	public void should_return_false_when_freeze_parkingLot_given_parkingLot_id_that_have_car (){
+		Long id = 1L;
+		ParkingLot parkingLot = new ParkingLot("old name", 12);
+
+		given(parkingLotRepository.findById(id)).willReturn((java.util.Optional.of(parkingLot)));
+		boolean result = parkingLotService.freezeParkingLot(id);
+
+		Assert.assertFalse(result);
 	}
 
 }

@@ -25,3 +25,10 @@ Given a parkingLot's id
 When freeze a parkinglot
 Then successfully freezed
 ```
+
+## 5. Freeze ParkingLots unsuccessfully
+```
+Given a nonexistent parkingLot's id
+When freeze a parkinglot
+Then unsuccessfully freezed
+```
