@@ -63,4 +63,19 @@ public class ParkingLotControllerTest {
 
 		resultActions.andExpect(status().isNoContent()).andDo(print());
 	}
+
+	@Test
+	public void should_return_status_code_400_when_update_parkingLot_failed () throws Exception {
+		JSONObject content = new JSONObject();
+		content.put("name","OOCL-ParkingLot-1");
+		content.put("size",20);
+		given(parkingLotsService.updateParkingLot(anyLong(),any(ParkingLot.class))).willReturn(false);
+
+		ResultActions resultActions = mvc.perform(put("/parkingLots/1")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.characterEncoding("UTF-8")
+				.content(mapper.writeValueAsString(content)));
+
+		resultActions.andExpect(status().isBadRequest()).andDo(print());
+	}
 }
